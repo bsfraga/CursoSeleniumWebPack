@@ -1,3 +1,4 @@
+package br.rs.bfraga.teste;
 import org.junit.Assert;
 import org.junit.Test;
 import org.openqa.selenium.Alert;
@@ -5,7 +6,10 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 
-
+/*
+ * criar instancia de DSL
+ * modificar teste com padrões de métodos DSL
+ */
 
 public class TesteAlert {
 

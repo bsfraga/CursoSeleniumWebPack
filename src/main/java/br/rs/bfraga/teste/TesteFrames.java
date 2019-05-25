@@ -1,20 +1,24 @@
+package br.rs.bfraga.teste;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 
+import br.rs.bfraga.core.DSL;
+
 public class TesteFrames {
 
 	private WebDriver driver;
+	private DSL dsl;
 	
 	@Before
 	public void inicializar() {
 		System.setProperty("webdriver.chrome.driver", "C:\\Users\\Bruno Fraga\\Documents\\Selenium WebDriver\\chrome\\chromedriver.exe");
 		driver = new ChromeDriver();
 		driver.get("C:\\Users\\Bruno Fraga\\Documents\\Selenium WebDriver\\Teste\\componentes.html");
+		dsl = new DSL();
 	}
 	
 	@After
@@ -25,16 +29,13 @@ public class TesteFrames {
 	@Test
 	public void interagirComFrame() {
 
-		driver.switchTo().frame("frame1");								//Muda o foco para o componente iFrame
-		driver.findElement(By.id("frameButton")).click();
-
-		Alert alert = driver.switchTo().alert();
-		String msg = alert.getText();
-		alert.accept();
-
-		driver.switchTo().defaultContent();								//Muda o foco para a pagina principal
-		driver.findElement(By.id("elementosForm:nome")).sendKeys(msg);
+		dsl.entrarFrame("frame1");
+		dsl.clicarBotão("frameButton");
+		String msg = dsl.obterTextoAceitaAlerta();
+		dsl.entrarSair();
+		dsl.escrever("elementosForm:nome", msg);
 		
+	
 	}
 	
 	@Test
@@ -43,14 +44,13 @@ public class TesteFrames {
 		 * Procura elementos por tagName
 		 */
 		
-		driver.findElement(By.id("buttonPopUpEasy")).click();
-		driver.switchTo().window("Popup");								//Muda o foco para a nova janela
-		driver.findElement(By.tagName("textarea")).sendKeys("Teste");
-		
-		driver.close();
-		driver.switchTo().window("");
-		
-		driver.findElement(By.tagName("textarea")).sendKeys("Testando de novo");;
+		dsl.clicarBotão("buttonPopUpEasy");
+		dsl.trocarJanela("Popup");
+		dsl.escrever(By.tagName("textarea"), "Teste");
+		dsl.fecharJanela();
+		dsl.trocarJanela("");
+		dsl.escrever(By.tagName("textarea"), "Teste");
+
 	}
 	
 	@Test
